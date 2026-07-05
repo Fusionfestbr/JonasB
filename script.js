@@ -30,93 +30,62 @@ function updateQR(){
 setInterval(updateQR, 20000);
 
 
-// ===== SWIPE CARROSSEL =====
+// ===== SWIPE CARROSSEL (Pointer Events — funciona iOS + Android + Desktop) =====
 
 const carousel  = document.querySelector('.carousel');
 const track     = document.querySelector('.carousel-track');
 const wrappers  = document.querySelectorAll('.ticket-wrapper');
-const total     = wrappers.length; // 4 ingressos
+const total     = wrappers.length;
 
 let currentIndex = 0;
 
-// Usa pixels em vez de %, eliminando ambiguidade do WebKit/iOS
 function moveCarousel() {
-  const slideWidth = carousel.offsetWidth; // largura real do container em px
-  track.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+  const slideWidth = carousel.offsetWidth;
+  track.style.transform = "translateX(" + (-currentIndex * slideWidth) + "px)";
 }
 
-// ---- TOUCH (iOS/Android) ----
+let pointerStartX  = 0;
+let pointerStartY  = 0;
+let isPointerDown  = false;
+let isHorizontal   = null;
 
-let touchStartX  = 0;
-let touchStartY  = 0;
-let isHorizontal = null; // null = ainda não determinado
+track.addEventListener('pointerdown', function(e) {
+  // ignora cliques duplicados (dblclick no iOS)
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-track.addEventListener('touchstart', function(e) {
-  touchStartX  = e.touches[0].clientX;
-  touchStartY  = e.touches[0].clientY;
-  isHorizontal = null;
-  // passive: false aqui para que o iOS respeite nosso preventDefault no touchmove
-}, { passive: false });
+  pointerStartX = e.clientX;
+  pointerStartY = e.clientY;
+  isPointerDown = true;
+  isHorizontal  = null;
 
-track.addEventListener('touchmove', function(e) {
-  if (e.touches.length > 1) return;
+  // captura o ponteiro para receber move/up mesmo fora do elemento
+  track.setPointerCapture(e.pointerId);
+}, { passive: true });
 
-  const diffX = e.touches[0].clientX - touchStartX;
-  const diffY = e.touches[0].clientY - touchStartY;
+track.addEventListener('pointermove', function(e) {
+  if (!isPointerDown) return;
 
-  // Determina a direção uma única vez por gesto
+  var diffX = e.clientX - pointerStartX;
+  var diffY = e.clientY - pointerStartY;
+
   if (isHorizontal === null) {
     if (Math.abs(diffX) > 5 || Math.abs(diffY) > 5) {
       isHorizontal = Math.abs(diffX) >= Math.abs(diffY);
     }
   }
 
-  // Impede o scroll da página apenas se o gesto for horizontal
   if (isHorizontal === true) {
     e.preventDefault();
   }
 }, { passive: false });
 
-track.addEventListener('touchend', function(e) {
-  // Usa changedTouches para ler a posição final corretamente no iOS
-  const diffX = e.changedTouches[0].clientX - touchStartX;
+track.addEventListener('pointerup', function(e) {
+  if (!isPointerDown) return;
+  isPointerDown = false;
+
+  var diffX = e.clientX - pointerStartX;
 
   if (isHorizontal === true && Math.abs(diffX) > 40) {
-    if (diffX < 0) {
-      currentIndex = Math.min(currentIndex + 1, total - 1); // avança
-    } else {
-      currentIndex = Math.max(currentIndex - 1, 0);         // volta
-    }
-    moveCarousel();
-  }
-
-  isHorizontal = null;
-}, { passive: true });
-
-track.addEventListener('touchcancel', function() {
-  isHorizontal = null;
-  moveCarousel(); // snapback para posição atual
-}, { passive: true });
-
-
-// ---- MOUSE (desktop) ----
-
-let mouseStartX    = 0;
-let isDraggingMouse = false;
-
-track.addEventListener('mousedown', e => {
-  mouseStartX     = e.clientX;
-  isDraggingMouse = true;
-});
-
-track.addEventListener('mousemove', e => {
-  if (!isDraggingMouse) return;
-});
-
-track.addEventListener('mouseup', e => {
-  if (!isDraggingMouse) return;
-  const diffX = e.clientX - mouseStartX;
-  if (Math.abs(diffX) > 50) {
     if (diffX < 0) {
       currentIndex = Math.min(currentIndex + 1, total - 1);
     } else {
@@ -124,9 +93,11 @@ track.addEventListener('mouseup', e => {
     }
     moveCarousel();
   }
-  isDraggingMouse = false;
-});
 
-track.addEventListener('mouseleave', () => {
-  isDraggingMouse = false;
+  isHorizontal = null;
+}, { passive: true });
+
+track.addEventListener('pointercancel', function() {
+  isPointerDown = false;
+  isHorizontal  = null;
 });

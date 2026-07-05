@@ -61,10 +61,12 @@ body{
 
 @keyframes wipe{
   from{
-    clip-path: inset(0 0 0 0);
+    transform: scaleX(1);
+    transform-origin: right;
   }
   to{
-    clip-path: inset(0 100% 0 0);
+    transform: scaleX(0);
+    transform-origin: right;
   }
 }
 
@@ -171,6 +173,7 @@ body{
 .carousel{
   overflow:hidden;
   width:100%;
+  transform: translateZ(0);
 }
 
 .carousel-track{
@@ -180,7 +183,6 @@ body{
   touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
-  will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
