@@ -168,5 +168,15 @@ btnPreview.addEventListener('click', function() {
 });
 
 // --- Init ---
+var fallbackIngressos = [
+  { setor:"Cadeira Superior",  acesso:"Portão B", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$380,00", secao:"CADEIRA SUPERIOR",  fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
+  { setor:"Pista Premium",     acesso:"Portão B", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$800,00", secao:"PISTA PREMIUM",     fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
+  { setor:"Pista",             acesso:"Portão A", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$420,00", secao:"PISTA",             fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
+  { setor:"Cadeira Inferior",  acesso:"Portão C", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$500,00", secao:"CADEIRA INFERIOR",  fileira:"Não numerado", abertura:"16:00", inicio:"19:30" }
+];
+
 var dadosSalvos = carregarDados();
-preencherFormulario(dadosSalvos);
+var lista = (dadosSalvos && dadosSalvos.ingressos && dadosSalvos.ingressos.length > 0)
+  ? dadosSalvos.ingressos
+  : fallbackIngressos;
+preencherFormulario({ ingressos: lista });
