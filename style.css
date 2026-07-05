@@ -62,11 +62,11 @@ body{
 @keyframes wipe{
   from{
     transform: scaleX(1);
-    transform-origin: right;
+    transform-origin: left;
   }
   to{
     transform: scaleX(0);
-    transform-origin: right;
+    transform-origin: left;
   }
 }
 
