@@ -3,6 +3,7 @@ var ingressosList = document.getElementById('ingressos-list');
 var btnAdd = document.getElementById('btnAdd');
 var btnSave = document.getElementById('btnSave');
 var btnPreview = document.getElementById('btnPreview');
+var btnReset = document.getElementById('btnReset');
 var toast = document.getElementById('toast');
 
 var camposTemplate = [
@@ -167,6 +168,11 @@ btnPreview.addEventListener('click', function() {
   window.location.href = 'ingresso.html';
 });
 
+btnReset.addEventListener('click', function() {
+  localStorage.removeItem(STORAGE_KEY);
+  window.location.reload();
+});
+
 // --- Init ---
 var fallbackIngressos = [
   { setor:"Cadeira Superior",  acesso:"Portão B", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$380,00", secao:"CADEIRA SUPERIOR",  fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
@@ -180,3 +186,10 @@ var lista = (dadosSalvos && dadosSalvos.ingressos && dadosSalvos.ingressos.lengt
   ? dadosSalvos.ingressos
   : fallbackIngressos;
 preencherFormulario({ ingressos: lista });
+
+// --- Service Worker ---
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js')
+    .then(function() { console.log('SW registrado'); })
+    .catch(function(err) { console.log('SW erro:', err); });
+}

@@ -1,14 +1,16 @@
-const CACHE_NAME = 'meus-ingressos-v4';
+const CACHE_NAME = 'meus-ingressos-v5';
 const ASSETS = [
   './',
   './index.html',
   './ingresso.html',
   './admin.html',
-  './home.css',
-  './style.css',
+  './main.css',
+  './ingresso.css',
   './admin.css',
-  './script.js',
+  './main.js',
+  './ingresso.js',
   './admin.js',
+  './modulepreload-polyfill.js',
   './manifest.json',
   './assets/icon-16.png',
   './assets/icon-32.png',
@@ -18,6 +20,7 @@ const ASSETS = [
   './assets/icon-192.png',
   './assets/icon-384.png',
   './assets/icon-512.png',
+  './assets/enhy.png',
   './assets/quentro.png',
   './assets/djavan.png',
   './assets/ticketmaster.png',

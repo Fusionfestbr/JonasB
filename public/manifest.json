@@ -1,9 +1,9 @@
 {
   "name": "Meus Ingressos",
   "short_name": "Ingressos",
-  "id": "/meus-ingressos/",
+  "id": "./",
   "description": "Gerencie seus ingressos de eventos",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

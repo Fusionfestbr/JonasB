@@ -186,6 +186,25 @@ body {
   transform: scale(0.98);
 }
 
+.btn-reset {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: #e05555;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 30px;
+  transition: 0.2s;
+}
+
+.btn-reset:active {
+  transform: scale(0.98);
+  background: rgba(224, 85, 85, 0.1);
+}
+
 /* TOAST */
 .toast {
   position: fixed;
