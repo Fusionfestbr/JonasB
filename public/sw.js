@@ -1,11 +1,14 @@
-const CACHE_NAME = 'meus-ingressos-v2';
+const CACHE_NAME = 'meus-ingressos-v3';
 const ASSETS = [
   '/',
   '/index.html',
   '/ingresso.html',
+  '/admin.html',
   '/home.css',
   '/style.css',
+  '/admin.css',
   '/script.js',
+  '/admin.js',
   '/manifest.json',
   '/assets/icon-16.png',
   '/assets/icon-32.png',

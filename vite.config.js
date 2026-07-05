@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         ingresso: resolve(__dirname, 'ingresso.html'),
+        admin: resolve(__dirname, 'admin.html'),
       },
       output: {
         // Remove o hash dos arquivos para não quebrar seu Service Worker manual

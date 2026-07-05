@@ -1,6 +1,74 @@
+// ===== RENDERIZAÇÃO DINÂMICA =====
+
+var STORAGE_KEY = 'meus-ingressos-data';
+
+var fallbackDados = {
+  evento: {
+    nome: "ENHYPEN WORLD TOUR 'BLOOD SAGA' IN SÃO PAULO",
+    data: "04/07/2026",
+    hora: "19:30hs",
+    local: "Nubank Parque"
+  },
+  ingressos: [
+    { setor:"Cadeira Superior",  acesso:"Portão B", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$380,00", secao:"CADEIRA SUPERIOR",  fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
+    { setor:"Pista Premium",     acesso:"Portão B", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$800,00", secao:"PISTA PREMIUM",     fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
+    { setor:"Pista",             acesso:"Portão A", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$420,00", secao:"PISTA",             fileira:"Não numerado", abertura:"16:00", inicio:"19:30" },
+    { setor:"Cadeira Inferior",  acesso:"Portão C", titular:"Camila Souza - 121.714.481-87", taxa:"INTEIRA - R$500,00", secao:"CADEIRA INFERIOR",  fileira:"Não numerado", abertura:"16:00", inicio:"19:30" }
+  ]
+};
+
+function carregarDados() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return null;
+}
+
+function renderizarPagina(dados) {
+  // header
+  var ev = dados.evento;
+  document.getElementById('evTitulo').textContent = ev.nome || '';
+  document.getElementById('evSubtitulo').textContent = (ev.data || '') + (ev.hora ? ' - ' + ev.hora : '') + (ev.local ? ' - ' + ev.local : '');
+
+  // ingressos
+  var track = document.getElementById('carouselTrack');
+  track.innerHTML = '';
+
+  dados.ingressos.forEach(function(ing) {
+    var w = document.createElement('div');
+    w.className = 'ticket-wrapper';
+    w.innerHTML =
+      '<div class="ticketmaster-img"><img src="assets/ticketmaster.png"></div>' +
+      '<div class="progress-container"><div class="progress-bar"></div></div>' +
+      '<div class="ticket-card top-card">' +
+        '<div class="ticket-top">' +
+          '<div class="qr-area"><img src="assets/qr1.png" class="qr-img"></div>' +
+          '<div class="ticket-side">' +
+            '<div class="side-block"><span class="mini-label">SETOR</span><span class="sector-name">' + (ing.setor || '') + '</span></div>' +
+            '<div class="side-block acesso"><span class="mini-label">ACESSO</span><span class="sector-name acesso-value">' + (ing.acesso || '') + '</span></div>' +
+            '<button class="more-info-btn">Mais informação</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ticket-card info-card">' +
+        '<div class="info-full"><span class="mini-label">TITULAR</span><span class="info-value">' + (ing.titular || '') + '</span></div>' +
+        '<div class="info-full"><span class="mini-label">TAXA</span><span class="info-value">' + (ing.taxa || '') + '</span></div>' +
+        '<div class="info-row"><div><span class="mini-label">SEÇÃO</span><span class="info-value">' + (ing.secao || '') + '</span></div><div><span class="mini-label">FILEIRA</span><span class="info-value">' + (ing.fileira || '') + '</span></div></div>' +
+        '<div class="info-row"><div><span class="mini-label">ABERTURA</span><span class="info-value">' + (ing.abertura || '') + '</span></div><div><span class="mini-label">INICIO</span><span class="info-value">' + (ing.inicio || '') + '</span></div></div>' +
+      '</div>';
+    track.appendChild(w);
+  });
+}
+
+// Renderiza antes de tudo
+var dadosSalvos = carregarDados() || fallbackDados;
+renderizarPagina(dadosSalvos);
+
+
 // ===== QR DINÂMICO =====
 
-const qrImages = [
+var qrImages = [
   "assets/qr1.png",
   "assets/qr2.png",
   "assets/qr3.png",
@@ -8,20 +76,19 @@ const qrImages = [
   "assets/qr5.png"
 ];
 
-let qrIndex = 0;
+var qrIndex = 0;
 
 function updateQR(){
   qrIndex = (qrIndex + 1) % qrImages.length;
 
-  document.querySelectorAll(".qr-img").forEach(img => {
+  document.querySelectorAll(".qr-img").forEach(function(img) {
     img.src = qrImages[qrIndex];
   });
 
-  // reinicia animação da barra de forma estável no iOS Safari
-  document.querySelectorAll(".progress-bar").forEach(bar => {
+  document.querySelectorAll(".progress-bar").forEach(function(bar) {
     bar.style.animation = "none";
     void bar.getBoundingClientRect();
-    requestAnimationFrame(() => {
+    requestAnimationFrame(function() {
       bar.style.animation = "";
     });
   });
@@ -30,27 +97,26 @@ function updateQR(){
 setInterval(updateQR, 20000);
 
 
-// ===== SWIPE CARROSSEL (Pointer Events — funciona iOS + Android + Desktop) =====
+// ===== SWIPE CARROSSEL (Pointer Events — iOS + Android + Desktop) =====
 
-const carousel  = document.querySelector('.carousel');
-const track     = document.querySelector('.carousel-track');
-const wrappers  = document.querySelectorAll('.ticket-wrapper');
-const total     = wrappers.length;
+var carousel  = document.querySelector('.carousel');
+var track     = document.querySelector('.carousel-track');
+var wrappers  = document.querySelectorAll('.ticket-wrapper');
+var total     = wrappers.length;
 
-let currentIndex = 0;
+var currentIndex = 0;
 
 function moveCarousel() {
-  const slideWidth = carousel.offsetWidth;
+  var slideWidth = carousel.offsetWidth;
   track.style.transform = "translateX(" + (-currentIndex * slideWidth) + "px)";
 }
 
-let pointerStartX  = 0;
-let pointerStartY  = 0;
-let isPointerDown  = false;
-let isHorizontal   = null;
+var pointerStartX  = 0;
+var pointerStartY  = 0;
+var isPointerDown  = false;
+var isHorizontal   = null;
 
 track.addEventListener('pointerdown', function(e) {
-  // ignora cliques duplicados (dblclick no iOS)
   if (e.pointerType === 'mouse' && e.button !== 0) return;
 
   pointerStartX = e.clientX;
@@ -58,7 +124,6 @@ track.addEventListener('pointerdown', function(e) {
   isPointerDown = true;
   isHorizontal  = null;
 
-  // captura o ponteiro para receber move/up mesmo fora do elemento
   track.setPointerCapture(e.pointerId);
 }, { passive: true });
 

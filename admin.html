@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f2c2f">
+  <meta name="description" content="Editar ingressos de eventos">
+  <title>Editar Ingressos</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+  <link rel="apple-touch-icon" href="assets/icon-152.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="assets/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Meus Ingressos">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <a href="index.html" class="back">&lt;</a>
+    <h1>Editar Ingressos</h1>
+    <div></div>
+  </header>
+
+  <!-- DADOS DO EVENTO -->
+  <p class="section-title">Dados do Evento</p>
+
+  <div class="field">
+    <label>Nome do Evento</label>
+    <input type="text" id="evNome" placeholder="Ex: ENHYPEN WORLD TOUR...">
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label>Data</label>
+      <input type="text" id="evData" placeholder="Ex: 04/07/2026">
+    </div>
+    <div class="field">
+      <label>Hora</label>
+      <input type="text" id="evHora" placeholder="Ex: 19:30hs">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Local</label>
+    <input type="text" id="evLocal" placeholder="Ex: Nubank Parque">
+  </div>
+
+  <!-- INGRESSOS -->
+  <p class="section-title">Ingressos</p>
+
+  <div id="ingressos-list"></div>
+
+  <button class="btn-add" id="btnAdd">+ Adicionar ingresso</button>
+
+  <button class="btn-save" id="btnSave">Salvar</button>
+  <button class="btn-preview" id="btnPreview">Pré-visualizar ingresso</button>
+
+</div>
+
+<div class="toast" id="toast">Salvo com sucesso!</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
