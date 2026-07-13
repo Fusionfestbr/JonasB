@@ -21,6 +21,7 @@ const ASSETS = [
   './assets/icon-384.png',
   './assets/icon-512.png',
   './assets/enhy.png',
+  './assets/harrystyles.png',
   './assets/quentro.png',
   './assets/djavan.png',
   './assets/ticketmaster.png',
